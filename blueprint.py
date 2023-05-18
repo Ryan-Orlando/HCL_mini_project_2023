@@ -37,9 +37,10 @@ def json():
 # redirecting
 @blueprint.route('/redirect')
 def redirecting():
-    return redirect(url_for('blueprint.index'))
+    return redirect(url_for('blueprint.get_file'))
 
 # get file - actual code
-@blueprint.route('/get_file')
+@blueprint.route('/get_file', methods=['GET'])
 def get_file():
-    return send_from_directory('adverts', fetch_file())
+    if request.method == 'GET':
+        return send_from_directory('adverts', fetch_file())
