@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for, send_from_directory
-from get_files import fetch_file
+from get_files import fetch_file, upload_file
 
 blueprint = Blueprint(__name__, 'blueprint')
 
@@ -57,3 +57,15 @@ def redirecting():
 def get_file():
     if request.method == 'GET':
         return send_from_directory('adverts', fetch_file())
+
+# uploading file
+@blueprint.route('/post_file', methods=['POST'])
+def post_file():
+    if request.method == 'POST':
+        
+        files = request.files.getlist('file')
+
+        for file in files:            
+            upload_file(file)
+    
+    return render_template("upload.html")

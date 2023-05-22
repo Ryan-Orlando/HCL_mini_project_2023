@@ -17,8 +17,13 @@
     </div>
 
     <button onclick="window.location.href='/redirect';">
-        Click Here for redirect to get_file
-      </button>
+        Click here for redirect to get_file
+    </button>
+
+    <form action = "/post_file" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" multiple />
+        <input type = "submit" value="Upload">
+    </form>
 
     <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 
