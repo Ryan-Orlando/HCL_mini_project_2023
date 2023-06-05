@@ -1,0 +1,13 @@
+{
+    "web": {
+        "client_id": "465758131297-53qg306udfuq54iun47fr0rq39qdl63d.apps.googleusercontent.com",
+        "project_id": "flaskhcllogin",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://127.0.0.1:5000/callback"
+        ]
+    }
+}
