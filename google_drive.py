@@ -8,11 +8,58 @@ import io
 
 #--------------------------------------------------------------------------------------------------
 
-def create_folder(flow):
+folder_name = 'Adverts'
+
+#--------------------------------------------------------------------------------------------------
+
+def folder_there(flow):
+
+    global folder_name
 
     creds = flow.credentials
 
-    # creating folder
+    try:
+        # create drive api client
+        service = build('drive', 'v3', credentials=creds)
+
+        # pylint: disable=maybe-no-member
+        results = service.files().list(
+            q="mimeType='application/vnd.google-apps.folder' and name='Adverts'",
+            pageSize=10, fields="nextPageToken, files(id, name)").execute()
+        folders = results.get('files', [])
+
+        print(folders)
+
+        if not folders:
+            print('No files found.')
+            return 0
+        
+        else:
+            print('Folders:')
+            for item in folders:
+                print(u'{0} ({1})'.format(item['name'], item['id']))
+            return folders[0]['id']     # return folder id if present
+
+    except HttpError as error:
+        print(F'An error occurred: {error}')
+        return 0
+
+
+#--------------------------------------------------------------------------------------------------
+
+def create_folder(flow):
+
+    global folder_name
+
+    creds = flow.credentials
+
+    folder_id = folder_there(flow)
+
+    if folder_id is not 0:
+        print(f"\n\n------------folder present----------{folder_id}------\n\n")
+        return folder_id        # return the folder id already present
+
+    # else creating folder
     try:
         # create drive api client
         service = build('drive', 'v3', credentials=creds)
