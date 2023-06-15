@@ -15,7 +15,7 @@ I will be explaining step by step to run this project locally
 <br>
 
 Open up any terminal in our required directory
-![Alt text](img_md\image.png)
+![Alt text](img_md/image.png)
 
 Run this script:
 ```sh
@@ -42,7 +42,7 @@ Run the following script:
 ```sh
 pip install -r requirements.txt
 ```
-![Alt text](img_md\image-2.png)
+![Alt text](img_md/image-2.png)
 
 <br>
 
@@ -53,7 +53,7 @@ Run the script:
 ```sh
 python app.py
 ```
-![Alt text](img_md\image-3.png)
+![Alt text](img_md/image-3.png)
 
 
 <br>
@@ -61,9 +61,9 @@ python app.py
 ### Follow the local-hosted link in your preferred browser
 <br>
 
-![Alt text](img_md\image-4.png)
+![Alt text](img_md/image-4.png)
 
-![Alt text](img_md\image-5.png)
+![Alt text](img_md/image-5.png)
 
 ### Done hosting the project locally
 - Note you can upload files locally (bascially copying the image files into the `adverts` folder)
