@@ -21,7 +21,7 @@ Run this script:
 ```sh
 git clone https://github.com/Ryan-Orlando/HCL_mini_project_temp.git
 ```
-![Alt text](img_md\image-1.png)
+![Alt text](img_md/image-1.png)
 
 <br>
 
