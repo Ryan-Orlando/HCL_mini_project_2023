@@ -1,10 +1,16 @@
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 
 from werkzeug.utils import secure_filename
 
+from tempfile import TemporaryFile
+
 import io
+
+import random
+
+from PIL import Image
 
 #--------------------------------------------------------------------------------------------------
 
@@ -55,7 +61,7 @@ def create_folder(flow):
 
     folder_id = folder_there(flow)
 
-    if folder_id is not 0:
+    if folder_id != 0:
         print(f"\n\n------------folder present----------{folder_id}------\n\n")
         return folder_id        # return the folder id already present
 
@@ -108,6 +114,53 @@ def upload_to_folder(flow, folder_id, file):
         print(F'An error occurred: {error}')
         return None
 
+#--------------------------------------------------------------------------------------------------
 
+def fetch_file_drive(flow, folder_id):
 
+    creds = flow.credentials
 
+    try:
+        # create drive api client
+        service = build('drive', 'v3', credentials=creds)
+
+        # pylint: disable=maybe-no-member
+        results = service.files().list(
+            q=f"parents in '{folder_id}'",
+            pageSize=10, fields="nextPageToken, files(id, name)").execute()
+        
+        files = results.get('files', [])
+
+        if len(files) == 0:
+            print('No files found.')
+            return None
+
+        file = random.choice(files)     # get a random file from the list of files
+
+        print("\n--------", file, "--------\n",file.get("id"), "\n")
+
+        request = service.files().get_media(fileId=file.get("id"))
+
+        f = io.BytesIO()
+        downloader = MediaIoBaseDownload(f, request)
+        
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+            print(F'Download {int(status.progress() * 100)}.')
+        
+        print(f)
+
+        # BytesIO object to temp file object
+        img_file = TemporaryFile()
+        img_file.seek(0)            # reset temp file pointer to the beginning
+        img = Image.open(f)         # open the image in a temporary file
+        rgb_im = img.convert('RGB') # convert image to RGB for JPEG conversion (JPEG doesn't support RGBA)
+        rgb_im.save(img_file, 'JPEG')
+        img_file.seek(0)
+
+        return img_file
+
+    except HttpError as error:
+        print(F'An error occurred: {error}')
+        return 0

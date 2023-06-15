@@ -2,48 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logged in</title>
+    <title>No Files</title>
     <link rel="stylesheet" href="../static/style.css" />
 </head>
 <body>
-    <h1 class="center_this">This is the protected page</h1>
-
-    <br><br>
-
-    <div class="topcorner">
-        Logged in as {{user}}
-    </div>
-
-    <br><br>
-
-    <form action = "/post_file_drive" method="POST" enctype="multipart/form-data" class="form">
-        <span class="form-title">Upload your file</span>
-        <p class="form-paragraph">
-            File should be an image
-          </p>
-         <label for="file-input" class="drop-container">
-        <span class="drop-title">Drop files here</span>
-        or
-        <input type="file" name="file" multiple accept="image/*" required="" id="file-input" />
-        <input type = "submit" value="Upload drive" class="button">
-    </label>
-    </form>
-
+    <h1 class="center_this">No Files</h1>
     <br>
-
-    <button onclick="window.location.href='/logout';" class="button">
+    <button onclick="window.location.href = '/';" class="button">
         <svg class="svgIcon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"></path></svg>
-        Click here for logout
+        Go Back to Main page
     </button>
-
     <br>
-
-    <button onclick="window.location.href='/get_file_drive';" class="button">
+    <button onclick="window.location.href = '/protected';" class="button">
         <svg class="svgIcon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"></path></svg>
-        Click here for getting files from drive
+        Go Back to logged page
     </button>
-
 </body>
 </html>

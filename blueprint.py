@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, url_for, send_from_directory, session, abort
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for, send_from_directory, session, abort, send_file
 
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
@@ -11,7 +11,7 @@ import pathlib
 import json
 
 from get_files import fetch_file, upload_file
-from google_drive import create_folder, upload_to_folder
+from google_drive import create_folder, upload_to_folder, fetch_file_drive
 
 #-------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ def login_required(function):
 # home page
 @blueprint.route('/')
 def index():
-    return render_template("index.html", name="Joe")
+    return render_template("index.html", name="HCL Mini Project")
 
 # about page
 @blueprint.route('/about')
@@ -77,23 +77,26 @@ def profile():
 def redirecting():
     return redirect(url_for('blueprint.get_file'))
 
-# get file - actual code
+# get file - locally
 @blueprint.route('/get_file', methods=['GET'])
 def get_file():
     if request.method == 'GET':
         return send_from_directory('adverts', fetch_file())
 
-# uploading file
+# uploading file in local
 @blueprint.route('/post_file', methods=['POST'])
 def post_file():
     if request.method == 'POST':
         
         files = request.files.getlist('file')
 
+        if files[0].filename == '':                     # suggestion of uploading empty list of files
+            return render_template("no_files.html")
+
         for file in files:
             upload_file(file)
     
-    return render_template("upload.html")
+    return render_template("index.html")
 
 # uploading file in google drive
 @blueprint.route('/post_file_drive', methods=['POST'])
@@ -104,10 +107,27 @@ def post_file_drive():
         
         files = request.files.getlist('file')
 
+        if files[0].filename == '':                     # suggestion of uploading empty list of files
+            return render_template("no_files.html")
+
         for file in files:
            upload_to_folder(flow, folder_id, file)
     
     return render_template("upload.html")
+
+# getting files from drive
+@blueprint.route('/get_file_drive', methods=['GET'])
+def get_file_drive():
+    if request.method == 'GET':
+
+        folder_id = create_folder(flow)
+
+        file = fetch_file_drive(flow, folder_id)
+
+        if file is None:
+            return render_template("no_files.html")
+
+        return send_file(file, mimetype='image/jpeg')
 
 #---------- Oauth Google ----------------
 
@@ -116,7 +136,7 @@ GOOGLE_CLIENT_ID = client_key["web"]["client_id"]
 
 client_secret = os.path.join(pathlib.Path(__file__).parent, "client_key.json")
 
-#-----------
+#-----------flow----------------
 flow = Flow.from_client_secrets_file(
 
     client_secrets_file=client_secret,
@@ -131,6 +151,7 @@ flow = Flow.from_client_secrets_file(
 @blueprint.route('/login')
 def login():
     authorization_url, state = flow.authorization_url()
+    print(session)
     session["state"] = state
     return redirect(authorization_url)
 
@@ -168,4 +189,5 @@ def callback():
 @blueprint.route('/protected')
 @login_required
 def protected():
-    return render_template("logged.html")
+    return render_template("logged.html", 
+                            user=session["name"])
