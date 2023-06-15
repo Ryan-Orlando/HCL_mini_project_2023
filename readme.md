@@ -53,6 +53,11 @@ Run the script:
 ```sh
 python app.py
 ```
+
+Or
+```sh
+flask run
+```
 ![Alt text](img_md/image-3.png)
 
 
