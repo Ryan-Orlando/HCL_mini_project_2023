@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../static/style.css" />
 </head>
 <body>
+
+    <!-- <script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script> -->
+
     <h1 class="center_this">This is the protected page</h1>
 
     <br><br>
@@ -44,6 +47,29 @@
         <svg class="svgIcon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"></path></svg>
         Click here for getting files from drive
     </button>
+
+    <br><br><br><br><br><br><br>
+
+    <!--To get values and pass it to python and change dataframe-->
+    <div class="login-box">
+ 
+        <form action="{{ url_for('blueprint.get_form') }}" method="post">
+          <div class="user-box">
+            <input type="text" name="client_drive" required="">
+            <label>Enter client name</label>
+          </div>
+          <div class="user-box">
+            <input type="text" name="key" required="">
+            <label>Enter custom key</label>
+          </div><center>
+            <button class="button" type="submit">
+                <svg class="svgIcon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"></path></svg>
+                Copy link to get_file from drive
+            </button>
+        
+          </a></center>
+        </form>
+      </div>
 
 </body>
 </html>

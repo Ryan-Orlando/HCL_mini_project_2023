@@ -12,6 +12,11 @@ import json
 
 from get_files import fetch_file, upload_file
 from google_drive import create_folder, upload_to_folder, fetch_file_drive
+from dataframe import dataframe_update, key_valid
+
+#-------------------------------------------------------------------------
+
+debug_key = "testing_key"
 
 #-------------------------------------------------------------------------
 
@@ -54,7 +59,7 @@ def about():
 # profile page
 @blueprint.route('/profile')
 def profile():
-    args = request.args
+    args = request.args             # arguments from url
     name = args.get('name')
     return render_template("index.html", name=name)
 
@@ -77,11 +82,31 @@ def profile():
 def redirecting():
     return redirect(url_for('blueprint.get_file'))
 
+# get request form
+@blueprint.route('/get_form', methods=['POST'])
+def get_form():
+
+    form_data = request.form
+    mode = dataframe_update(form_data)
+
+    if mode == "local":
+        return redirect(url_for('blueprint.index'))
+
+    elif mode == "drive":
+        return redirect("/protected")
+
 # get file - locally
 @blueprint.route('/get_file', methods=['GET'])
 def get_file():
-    if request.method == 'GET':
+
+    args = request.args
+    key = args.get('key')
+
+    if request.method == 'GET' and key_valid(key, mode="local"):
         return send_from_directory('adverts', fetch_file())
+    
+    else:
+        return render_template("no_access.html")
 
 # uploading file in local
 @blueprint.route('/post_file', methods=['POST'])
@@ -118,7 +143,11 @@ def post_file_drive():
 # getting files from drive
 @blueprint.route('/get_file_drive', methods=['GET'])
 def get_file_drive():
-    if request.method == 'GET':
+
+    args = request.args
+    key = args.get('key')
+
+    if request.method == 'GET' and key_valid(key, mode="drive"):
 
         folder_id = create_folder(flow)
 
@@ -128,6 +157,9 @@ def get_file_drive():
             return render_template("no_files.html")
 
         return send_file(file, mimetype='image/jpeg')
+    
+    else:
+        return render_template("no_access.html")
 
 #---------- Oauth Google ----------------
 

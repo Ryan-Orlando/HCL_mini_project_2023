@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../static/style.css" />
 </head>
 <body>
+
+    <!-- <script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script> -->
+
     <div>
         <h1 class="center_this">
             Home Page
@@ -44,7 +47,24 @@
     </label>
     </form>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+    <br><br><br><br><br><br><br><br>
+
+    <!--To get values and pass it to python and change dataframe-->
+    <div class="login-box">
+ 
+        <form action="{{ url_for('blueprint.get_form') }}" method="post">
+          <div class="user-box">
+            <input type="text" name="client_local" required="">
+            <label>Enter client name</label>
+          </div>
+          <div class="user-box">
+            <input type="text" name="key" required="">
+            <label>Enter custom key</label>
+          </div><center>
+            <input type = "submit" value="Copy link to share" class="button">
+          </a></center>
+        </form>
+      </div>
 
 </body>
 </html>
